@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surfshark VPN 2026 年全方位終極詳細指南</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Noto+Sans+TC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================================
+           1. 全域視覺定義 & 明暗雙色配色變數
+           ========================================================================== */
+        :root[data-theme="dark"] {
+            --bg-main: #060913;       
+            --bg-card: #0b132b;       
+            --bg-nav: rgba(11, 19, 43, 0.75); /* 滾動後動態島的深色背景 */
+            --bg-glossary: rgba(168, 85, 247, 0.03); 
+            --border-color: #1c2541;  
+            --border-hover: #00f2fe;  
+            --text-primary: #f8fafc;  
+            --text-secondary: #94a3b8;
+            --accent-blue: #00f2fe;   
+            --accent-purple: #a855f7; 
+            --gradient-hero: linear-gradient(135deg, #060913 0%, #0b132b 100%);
+            --gradient-title: linear-gradient(90deg, #38bdf8, #a855f7);
+            --gradient-btn: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            --card-glow: rgba(0, 242, 254, 0.08); 
+        }
+
+        :root[data-theme="light"] {
+            --bg-main: #f8fafc;       
+            --bg-card: #ffffff;       
+            --bg-nav: rgba(255, 255, 255, 0.8); /* 滾動後動態島的亮色背景 */
+            --bg-glossary: rgba(168, 85, 247, 0.02); 
+            --border-color: #e2e8f0;  
+            --border-hover: #0284c7;  
+            --text-primary: #0f172a;  
+            --text-secondary: #475569;
+            --accent-blue: #0284c7;   
+            --accent-purple: #7c3aed; 
+            --gradient-hero: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            --gradient-title: linear-gradient(90deg, #0284c7, #7c3aed);
+            --gradient-btn: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            --card-glow: rgba(2, 132, 199, 0.05); 
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            line-height: 1.8;
+            padding-top: 100px; 
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* ==========================================================================
+           2. 智慧型「動態島」懸浮導覽列核心樣式
+           ========================================================================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            max-width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: transparent; 
+            border: 1px solid transparent;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            padding: 24px 8%;
+            height: 85px;
+            border-radius: 0px;
+            /* 使用 transform 來平滑處理未來滾動時的置中對齊 */
+            transform: translateX(0%); 
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 帶有一點點微彈性的動態島動畫 */
+        }
+
+        /* 滾動後：啟動動態島（獨立懸浮膠囊條）型態 */
+        .navbar.scrolled {
+            top: 15px; /* 往下懸浮，不貼齊頂端 */
+            left: 50%;
+            transform: translateX(-50%); /* 配合 left: 50% 達成完美居中 */
+            width: 90%;
+            max-width: 1140px; /* 寬度收縮，不再是橫式滿版 */
+            height: 60px;
+            padding: 0 30px; /* 縮減內部襯距 */
+            background-color: var(--bg-nav);
+            border: 1px solid var(--border-color);
+            border-radius: 30px; /* 變成圓角動態島膠囊 */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 900;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-btn);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #060913;
+            font-weight: bold;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .btn-login {
+            background: var(--text-primary);
+            color: var(--bg-main);
+            border: none;
+        }
+        .btn-login:hover {
+            background: var(--accent-blue);
+            color: #060913;
+        }
+
+        /* 縮小動態島狀態下的按鈕細節 */
+        .navbar.scrolled .nav-btn {
+            padding: 6px 14px;
+            border-radius: 20px; /* 按鈕也跟著圓角化配合動態島 */
+        }
+
+        /* ==========================================================================
+           3. 視覺形象大圖區 (Hero Banner)
+           ========================================================================== */
+        .hero-banner {
+            width: 100%;
+            height: 420px;
+            background-image: linear-gradient(to bottom, rgba(6, 9, 19, 0.3), var(--bg-main)), url('https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 24px;
+            margin-bottom: 50px;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.8), 0 10px 30px rgba(0, 242, 254, 0.05);
+            border: 1px solid rgba(0, 242, 254, 0.1);
+        }
+
+        .badge {
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: var(--gradient-title);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 800px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-btn);
+            color: #060913 !important;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(0, 242, 254, 0.5);
+            color: #060913 !important;
+        }
+
+        .btn-sm {
+            padding: 8px 20px;
+            font-size: 0.88rem;
+            border-radius: 8px;
+        }
+
+        .btn-center-box {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        /* ==========================================================================
+           4. 智慧 12 欄位彈性網格排版 & 卡片特效
+           ========================================================================== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .col-12 { grid-column: span 12; }
+        .col-8 { grid-column: span 8; }
+        .col-6 { grid-column: span 6; }
+        .col-4 { grid-column: span 4; }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 35px;
+            overflow: hidden; 
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-hover);
+            box-shadow: inset 0 0 30px var(--card-glow), 0 20px 40px rgba(0, 242, 254, 0.08);
+        }
+
+        .card-image-wrapper {
+            width: 100%;
+            height: 220px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+
+        .card:hover .card-image {
+            transform: scale(1.06);
+        }
+
+        .card h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .card h2 .num {
+            color: var(--accent-purple);
+            font-family: monospace;
+            margin-right: 12px;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        /* ==========================================================================
+           5. 高級項目清單與專有名詞補充區 (Glossary)
+           ========================================================================== */
+        .feature-list {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+        }
+
+        .feature-list li strong {
+            color: var(--text-primary);
+        }
+
+        .feature-list li::before {
+            content: "▹";
+            color: var(--accent-blue);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .glossary-box {
+            background: var(--bg-glossary);
+            border: 1px dashed rgba(168, 85, 247, 0.3);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 25px;
+        }
+
+        .glossary-box h3 {
+            font-size: 1.1rem;
+            color: var(--accent-purple);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .glossary-item {
+            background: rgba(255,255,255,0.01);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-purple);
+        }
+
+        .glossary-item term {
+            display: block;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+
+        .glossary-item definition {
+            display: block;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ==========================================================================
+           6. 方案表格與響應式滑動容器
+           ========================================================================== */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin: 25px 0;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            background: rgba(11, 19, 43, 0.6);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+            min-width: 800px; 
+        }
+
+        th {
+            background: rgba(255,255,255,0.04);
+            padding: 18px 15px;
+            color: var(--text-primary);
+            font-weight: 700;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 16px 15px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            vertical-align: middle;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .check-yes { color: #10b981; font-weight: bold; }
+        .check-no { color: #ef4444; }
+
+        /* ==========================================================================
+           7. FAQ 折疊選單排版
+           ========================================================================== */
+        .faq-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .faq-question {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .faq-question::before {
+            content: "Q.";
+            color: var(--accent-blue);
+            margin-right: 10px;
+            font-weight: 900;
+        }
+
+        .faq-answer {
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+            padding-left: 25px;
+            border-left: 2px solid rgba(0, 242, 254, 0.2);
+        }
+
+        .highlight {
+            color: var(--accent-blue);
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        /* ==========================================================================
+           8. RWD 媒體查詢斷點
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .col-8, .col-4 { grid-column: span 12; }
+            .col-6 { grid-column: span 12; }
+            .hero-banner { height: 320px; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 20px 16px; }
+            .hero-banner { height: 280px; border-radius: 16px; margin-bottom: 30px; }
+            header h1 { font-size: 2rem; }
+            .card { padding: 25px 20px; grid-column: span 12 !important; }
+            .glossary-grid { grid-template-columns: 1fr; gap: 15px; }
+            .card-image-wrapper { height: 180px; }
+            
+            /* 行動端動態島微調，避免太窄擠壓按鈕 */
+            .navbar.scrolled {
+                width: 95%;
+                padding: 0 15px;
+            }
+            .nav-logo span {
+                display: none; /* 行動端動態島內只留 Logo 圖示，隱藏文字優化空間 */
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 { font-size: 1.6rem; }
+            header p { font-size: 0.95rem; }
+            .card h2 { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <div class="logo-icon">S</div>
+            <span>網路安全研究中心</span>
+        </a>
+        <div class="nav-controls">
+            <button class="nav-btn" id="theme-toggle">
+                <span id="theme-icon">🌙</span> <span id="theme-text">暗黑模式</span>
+            </button>
+            <a href="https://surfshark.com/zh-tw/login" target="_blank" class="nav-btn btn-login">後台登入</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div class="hero-banner">
+            <span class="badge">2026 網路安全前瞻報告</span>
+            <header>
+                <h1>Surfshark VPN 2026 年全方位終極詳細指南</h1>
+                <p>以深度、客觀的角度，全面解析 Surfshark VPN 的公司背景、技術架構、核心功能、資安審核、影音應用以及購買與退款的實作流程。</p>
+                <a href="https://surfshark.com/zh-tw/buy" target="_blank" class="btn-primary">前往 Surfshark 官網獲取折扣 →</a>
+            </header>
+        </div>
+
+        <div class="main-grid">
+            
+            <div class="card col-8">
+                <div>
+                    <h2><span class="num">一</span>公司背景與司法管轄權的深度解析</h2>
+                    <p><strong>1. 總部地點與荷蘭法規優勢：</strong> Surfshark 成立於 2018 年，雖然在 VPN 業界中資歷相對較短，但成長速度極快，目前已成為全球頂尖的服務供應商之一。其總部位於荷蘭阿姆斯特丹（地址為 Kabelweg 57, 1014BA Amsterdam）。選擇荷蘭作為總部具有戰略上的法律優勢。荷蘭擁有嚴謹的隱私保護架構，且受歐盟《一般資料保護規則》(GDPR) 規範，能為使用者提供法律保障。最重要的是，荷蘭法律並未強制要求 VPN 業者必須儲存或保留使用者的網路日誌，這使得 Surfshark 能夠合法且嚴格地執行無日誌政策。</p>
+                    <p><strong>2. 透明度承諾與實戰檢驗：</strong> 該公司定期發布透明度報告，公開政府調閱資料的請求數量。截至 2026 年，儘管曾收到執法部門搜索票（例如配合阿姆斯特丹法院的刑事調查），但因不儲存使用者 IP、瀏覽紀錄或網路流量，Surfshark 無法提供 any 活動資料，僅能確認帳戶存在與付款資訊。目前公司已從傳統的金絲雀聲明轉向提供更詳細的季度報告。</p>
+                    <p><strong>3. 集團合併與獨立營運生態：</strong> 2022 年 2 月，Surfshark 與 Nord Security（NordVPN 的母公司）宣布合併，納入同一個控股集團下。然而，這兩家公司至今仍維持獨立品牌營運，擁有各自的基礎架構、產品開發計畫、技術團隊與客戶群。Surfshark 更傾向於開發面向消費者的創新隱私工具，而維持其年輕、高性價比的品牌定位。</p>
+                </div>
+
+                <div class="glossary-box">
+                    <h3>💡 本章專有名詞解析</h3>
+                    <div class="glossary-grid">
+                        <div class="glossary-item">
+                            <term>無日誌政策 (No-logs policy)</term>
+                            <definition>承諾不收集或存儲任何通過其伺服器傳輸的用戶活動日誌（如 IP、瀏覽紀錄）。</definition>
+                        </div>
+                        <div class="glossary-item">
+                            <term>金絲雀聲明 (Warrant Canary)</term>
+                            <definition>業者在未收到政府秘密搜索票前定期更新的公告。若公告消失，即暗示已被司法機關介入。</definition>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card col-4">
+                <div>
+                    <div class="card-image-wrapper">
+                        <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=500&q=80');"></div>
+                    </div>
+                    <h2>全球伺服器覆蓋與硬體調校</h2>
+                    <p>截至 2026 年最新數據，Surfshark 在全球超過 100 個國家/地區部署了 3,200 到 4,500+ 台伺服器。</p>
+                    <ul class="feature-list">
+                        <li><strong>100Gbps 伺服器：</strong>首批於阿姆斯特丹等核心節點部署，滿足 2026 高頻寬網路時代需求。</li>
+                        <li><strong>實體節點優勢：</strong>絕大多數為實體伺服器，帶來極低的延遲與超群的連線穩定度。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card col-12">
+                <div>
+                    <h2><span class="num">二</span>購買方案與價格精算指南 (2026 最新官網同步)</h2>
+                    <p>Surfshark 提供三種不同層級的安全套組，將 VPN 與多種資安工具結合，使用者可根據自身對「個資防護」的需求深度來選擇：</p>
+                    
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>功能與服務</th>
+                                    <th>Surfshark Starter (基礎方案)</th>
+                                    <th>Surfshark One (進階方案)</th>
+                                    <th>Surfshark One+ (旗艦方案)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>VPN 核心連線</strong></td>
+                                    <td class="check-yes">✔ 包含（無限裝置、不限流量）</td>
+                                    <td class="check-yes">✔ 包含（無限裝置、不限流量）</td>
+                                    <td class="check-yes">✔ 包含（無限裝置、不限流量）</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>CleanWeb 廣告攔截</strong></td>
+                                    <td class="check-yes">✔ 包含（基本廣告與惡意網站封鎖）</td>
+                                    <td class="check-yes">✔ 包含（基本廣告與惡意網站封鎖）</td>
+                                    <td class="check-yes">✔ 包含（基本廣告與惡意網站封鎖）</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Alternative ID</strong></td>
+                                    <td class="check-yes">✔ 包含（產生匿名線上身分與信箱）</td>
+                                    <td class="check-yes">✔ 包含（產生匿名線上身分與信箱）</td>
+                                    <td class="check-yes">✔ 包含（加碼虛擬電話功能）</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>防毒軟體 (Antivirus)</strong></td>
+                                    <td class="check-no">❌ 無</td>
+                                    <td class="check-yes">✔ 包含（專業防毒與即時防護）</td>
+                                    <td class="check-yes">✔ 包含（專業防毒與即時防護）</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>個資外洩警報 (Alert)</strong></td>
+                                    <td class="check-no">❌ 無</td>
+                                    <td class="check-yes">✔ 包含（暗網個資監控）</td>
+                                    <td class="check-yes">✔ 包含（暗網個資監控）</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Search 私密搜尋引擎</strong></td>
+                                    <td class="check-no">❌ 無</td>
+                                    <td class="check-yes">✔ 包含（無廣告、無追蹤搜尋）</td>
+                                    <td class="check-yes">✔ 包含（無廣告、無追蹤搜尋）</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Incogni 服務</strong></td>
+                                    <td class="check-no">❌ 無</td>
+                                    <td class="check-no">❌ 無</td>
+                                    <td class="check-yes">✔ 包含（自動要求仲介刪除個資）</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>官方快捷分流通道</strong></td>
+                                    <td><a href="https://surfshark.com/zh-tw/download" target="_blank" class="btn-primary btn-sm">選購 Starter</a></td>
+                                    <td><a href="https://surfshark.com/zh-tw/one" target="_blank" class="btn-primary btn-sm" style="background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%); box-shadow: 0 4px 15px rgba(168,85,247,0.3);">選購 One 進階款</a></td>
+                                    <td><a href="https://surfshark.com/zh-tw/one" target="_blank" class="btn-primary btn-sm">選購 One+</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p><strong>💰 小資族省錢與結帳技巧：</strong></p>
+                    <ul class="feature-list" style="margin-bottom: 20px;">
+                        <li><strong>長期訂閱優惠：</strong> 訂閱 2 年方案通常享有最高 <span class="highlight">86% 的折扣</span>，平均每月最低約為 <span class="highlight">US$2.49 (約 NT$77)</span>。</li>
+                        <li><strong>無限裝置共享特性：</strong> 單一帳號可同時登入無限台設備，適合全家人或好友集資共享。</li>
+                        <li><strong>創作者優惠碼對比：</strong> 輸入 <span class="highlight">joeman</span> 除最高折扣外，加贈 3 個月免費；輸入 <span class="highlight">HUZI</span> 同樣能鎖定官方年度最低特惠。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card col-12">
+                <div>
+                    <h2><span class="num">三</span>核心功能特色與獨家工具拆解</h2>
+                    <ul class="feature-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px;">
+                        <li><strong>CleanWeb 廣告攔截：</strong> 封鎖瀏覽器中的侵入式廣告、追蹤程式、惡意網站與釣魚連結。</li>
+                        <li><strong>終止開關 (Kill Switch)：</strong> 當 VPN 連線意外中斷時，自動切斷網際網路連線，防止真實 IP 外洩。</li>
+                        <li><strong>Bypasser (分割隧道)：</strong> 允許使用者自訂特定網銀或蝦皮購物繞過 VPN。</li>
+                        <li><strong>Alternative ID & Number：</strong> 獨家生成全新線上虛擬身分與信箱用於註冊，防範垃圾郵件。</li>
+                        <li><strong>雙重 VPN (MultiHop)：</strong> 流量經過兩台伺服器進行雙重加密。</li>
+                        <li><strong>Camouflage (混淆模式)：</strong> 自動抹除 VPN 流量特有的數據特徵，突破封鎖。</li>
+                        <li><strong>NoBorders 模式：</strong> 當系統偵測到使用者處於強烈網路限制環境時自動啟動。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card col-6">
+                <div>
+                    <h2><span class="num">四</span>基礎設施：伺服器網絡與連線協定</h2>
+                    <p><strong>1. 台灣本地支援：</strong> 在台灣台中市設有伺服器中心，提供超過 32 個伺服器節點。</p>
+                    <p><strong>2. 100% 純 RAM 伺服器技術：</strong> 全面採用僅限 RAM 架構，所有數據僅存在於揮發性臨時記憶體中，斷電或重啟後資料徹底空虛化。</p>
+                    <p><strong>3. 多元連線協定：</strong> 支援最速的 <strong>WireGuard</strong> 協定。此外，推出 macOS 獨家 <strong>Dausos 協定</strong>，內建<strong>後量子密碼學防護能力</strong>。</p>
+                </div>
+            </div>
+
+            <div class="card col-6">
+                <div>
+                    <h2><span class="num">五</span>影音串流與遊戲應用實戰</h2>
+                    <p><strong>1. 一鍵解鎖區域限制：</strong> 實測可解鎖 Netflix、Disney+、HBO Max、YouTube Premium、Amazon Prime Video。</p>
+                    <p><strong>2. 節省訂閱成本：</strong> 連線至低物價國家（如印度、土耳其）購買影音會員，價格可能僅需原本的 1/3。</p>
+                    <p><strong>3. Android 專屬：GPS Override (模擬定位)：</strong> 與 Android 開發者模式連動，將手機系統級的 GPS 座標強制修改為與 VPN 伺服器一致。</p>
+                </div>
+            </div>
+
+            <div class="card col-6">
+                <div>
+                    <h2><span class="num">六</span>安全審查與技術驗證</h2>
+                    <p>為了驗證其安全聲明與無日誌政策，Surfshark 定期接受專業第三方機構的獨立稽核：</p>
+                    <ul class="feature-list">
+                        <li><strong>Deloitte (勤業眾信)：</strong> 於 2023 年與 2025 年進行技術稽核，驗證了無日誌政策。</li>
+                        <li><strong>Cure53：</strong> 2026 年初針對全新的 Dausos 協定進行了原始碼審計，給予穩定評價。</li>
+                        <li><strong>SecuRing：</strong> 2025 年對其整體網路基礎設施進行審查，確認防護機制。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card col-6">
+                <div>
+                    <h2><span class="num">七</span>免費試用與退款完整流程</h2>
+                    <p><strong>1. 7 天免費試用啟動：</strong> macOS、iOS 或 Android 的新用戶，可透過 App 申請 7 天免費試用。</p>
+                    <p><strong>2. 30 天無條件退款保證：</strong> 購買後 30 天內不滿意均可獲得全額退款。實作步驟如下：</p>
+                    <div style="background: rgba(255,255,255,0.02); padding: 12px; border-radius: 8px; font-size: 0.9rem; border-left: 2px solid var(--accent-blue); margin-top: 10px;">
+                        對話視窗輸入「Live Chat」轉接真人客服，告知退款需求：<em>"I would like to cancel my subscription and get a full refund."</em> 提供註冊 Email 後，款項將在 1 至 10 個工作天內退回。
+                    </div>
+                </div>
+            </div>
+
+            <div class="card col-12">
+                <h2><span class="num">八</span>進階常見問答擴充 (FAQ)</h2>
+                <div class="faq-item"><div class="faq-question">使用 VPN 合法嗎？</div><div class="faq-answer">在台灣使用 VPN 完全合法。但在中國大陸等國則有嚴格審查，建議進入前先下載設定好。</div></div>
+                <div class="faq-item"><div class="faq-question">連線後發現網速變慢該如何處理？</div><div class="faq-answer">手動將連線協定切換為 <span class="highlight">WireGuard</span>，通常能釋放高達 90% 以上的原生網路頻寬。</div></div>
+                <div class="faq-item"><div class="faq-question">Surfshark 可以安裝在電視上嗎？</div><div class="faq-answer">支援 Android TV、Apple TV（tvOS）以及 Amazon Fire TV Stick，不支援的裝置可透過 <span class="highlight">Smart DNS</span> 設定。</div></div>
+            </div>
+
+        </div>
+
+        <footer>
+            <p>© 2026 資訊科技安全分析系統｜風格參考自ExpTech官網</p>
+        </footer>
+    </div>
+
+    <script>
+        // 「動態島」懸浮導覽列滾動邏輯控制
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 40) {
+                navbar.classList.add('scrolled'); // 觸發動態島收縮與懸浮變形
+            } else {
+                navbar.classList.remove('scrolled'); // 返回頂端恢復橫式透明
+            }
+        });
+
+        // 明暗模式切換
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        const htmlElement = document.documentElement;
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                htmlElement.setAttribute('data-theme', 'light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = '亮色模式';
+            } else {
+                htmlElement.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = '暗黑模式';
+            }
+        });
+    </script>
+</body>
+</html>
